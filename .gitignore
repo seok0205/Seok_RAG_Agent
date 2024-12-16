@@ -1,3 +1,11 @@
 *.env
 
 venv
+
+ai_news_vectorstore
+
+processed_docs
+
+__pycache__
+
+hybrid_search_test.py
