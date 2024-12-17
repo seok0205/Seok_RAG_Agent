@@ -63,7 +63,7 @@ class YouTubeSearchTool:
                         'description': item['snippet']['description'],
                         'url': f"https://www.youtube.com/watch?v={video_id}",
                         'view_count': int(video_stats.get('viewCount', 0)),
-                        'like_count': int(video_stats.get('likeCount', 0))
+                        'like_count': int(video_stats.get('likeCount', 0)),
                     }
                     video_list.append(video)
                 except Exception as e:

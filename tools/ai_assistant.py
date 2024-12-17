@@ -1,9 +1,9 @@
 import os
 from dotenv import load_dotenv
-# import tools.rag_hybrid_search as rhs
-import rag_hybrid_search as rhs
-# import tools.youtube_fuc as yf
-import youtube_fuc as yf
+import tools.rag_hybrid_search as rhs
+# import rag_hybrid_search as rhs
+import tools.youtube_fuc as yf
+# import youtube_fuc as yf
 
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
@@ -53,7 +53,7 @@ class AIAssistant:
         """
         환경 변수파일에서 설정값 로드, AIAssistant 인스턴스 생성하는 클래스 메서드
         """
-        load_dotenv(dotenv_path='seok.env')
+        load_dotenv(dotenv_path='seok25.env')
 
         config = AIAssistantConfig(
             llm_model=os.getenv("OPENAI_MODEL"),
@@ -78,7 +78,7 @@ class AIAssistant:
 
         self.youtube_tool = yf.YouTubeSearchTool(config.youtube_api_key)
 
-        self.embedding_model = OpenAIEmbeddings(model=config.embedding_model)
+        self.embedding_model = OpenAIEmbeddings(model=config.embedding_model, api_key=config.openai_api_key)
         self.rag = rhs.AINewsRAG(self.embedding_model)
 
         self.rag.load_vector_store(config.vector_store_path, config.processed_docs_path)
@@ -188,6 +188,8 @@ class AIAssistant:
             for tool in self.tools:
                 if tool.name == action:
                     return {'action': action, 'response': tool.func(search_keyword)}
+                
+            return f"지원 불가: {action}"
         
         except Exception as e:
             return f"처리 중 오류 발생: {e}"
@@ -200,35 +202,15 @@ def main():
     print("\nAI 정보 검색 도우미를 시작합니다.")
 
     test_cases = [
-        {
-            "name": "유튜브 검색 테스트",
-            "query": "ChatGPT 사용법 동영상 찾아줘",
-            "expected_tool": "search_video"
-        },
-        {
-            "name": "유튜브 검색 테스트",
-            "query": "머신러닝 입문 강의 추천해주세요.",
-            "expected_tool": "search_video"
-        }
+        "AI 관련 기사 찾아줘",
+        "머신러닝 입문 강의 추천해주세요.",
     ]
 
-    print("\n테스트 케이스 실행 시작...")
-
-    for i, test in enumerate(test_cases, 1):
-        print(f"\n테스트 케이스 #{i}: {test['name']}")
-        print(f"질문: {test['query']}")
-        print(f"예상 도구: {test['expected_tool']}")
-        print("\n결과:")
-
-        try:
-            result = assistant.process_query(test["query"])
-            print("=" * 30)
-            print(result)
-            print("=" * 30)
-        except Exception as e:
-            print(f"오류 발생: {e}")
-
-        print("-" * 40)
+    for query in test_cases:
+        print(f"질문: {query}")
+        result = assistant.process_query(query)
+        print(f"답변: {result}\n")
+    
 
 if __name__ == "__main__":
     main()

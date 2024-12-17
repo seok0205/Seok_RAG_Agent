@@ -267,11 +267,12 @@ class AINewsRAG:
             self.logger.error(f"로드 중 오류 발생: {str(e)}")
             raise
 
-load_dotenv(dotenv_path='seok.env')
+load_dotenv(dotenv_path='seok25.env')
 
 # 임베딩 모델 초기화 
 embedding_model = OpenAIEmbeddings(
-    model=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-ada-002")
+    model=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-ada-002"),
+    api_key=os.getenv("OPENAI_API_KEY", "")
 )
 
 # 환경 변수에서 경로 가져오기
