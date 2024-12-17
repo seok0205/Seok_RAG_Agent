@@ -66,3 +66,26 @@ NEWS_FILE_PATH="./ai_news"
 - Hybrid search
 - pydantic
 - youtube api
+
+## 일정표
+
+> 2024.12.14
+
+- collect_news_data.py 시작 및 완료
+- rag_hybrid_search.py 시작
+
+> 2024.12.15
+
+- rag_hybrid_search.py 완료
+- ai_assistant.py 시작
+- youtube_fuc.py 시작
+
+> 2024.12.16
+
+- ai_assistant.py 완료
+- youtube_fuc.py 완료
+
+> 2024.12.17
+
+- main.py 시작 및 완료
+- README.md 작성
